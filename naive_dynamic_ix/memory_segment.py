@@ -47,12 +47,14 @@ class Posting:
         self.positions = merged
 
 class PostingList:
-    def __init__(self):
+    def __init__(self, postings = []):
         '''
         A PostingList maintains a list of Posting objects sorted by doc_id.
         '''
-        self.postings = []
-        self.__doc_ids = [] # keep a separate list of doc ids mostly for convenience to use with bisect_left.
+        self.postings = postings
+
+        # keep a separate list of doc ids mostly for convenience to use with bisect_left.
+        self._doc_ids = [posting.doc_id for posting in postings]
 
     def add_posting(self, posting: Posting):
         '''
@@ -60,21 +62,36 @@ class PostingList:
         :param posting: Posting object
         :return: None
         '''
-        posting_i = bisect_left(self.__doc_ids, posting.doc_id)
-        if self.__doc_ids[posting_i] != posting.doc_id:
+        posting_i = bisect_left(self._doc_ids, posting.doc_id)
+        if self._doc_ids[posting_i] != posting.doc_id:
             # if we don't already have this doc in our postings list, insert it
             self.postings.insert(posting_i, posting)
+            self._doc_ids.insert(posting_i, posting.doc_id)
         else:
             # if already have this doc, merge the positions lists of the postings
             self.postings[posting_i].merge_posting(posting)
 
-    def phrase_intersect(self, posting_list):
+    @staticmethod
+    def find_positional_runs(posting_lists: list):
         '''
-        Executes an exact phrase intersection with another posting list, modifying self in-place.
-        :param posting_list: Another PostingList.
-        :return: None
+        Finds postings that recur throughout the posting lists to form positional runs.
+        If all posting lists feature a doc id, and sequential posting lists
+        feature that doc id in sequential positions, that forms a positional run. Example:
+        >>> x = PostingList([Posting(1, [2, 5]), Posting(2, [2])])
+        >>> y = PostingList([Posting(1, [6])])
+        >>> z = PostingList([Posting(1, [7]), Posting(2, [3])])
+        >>> find_positional_runs([x, y, z])
+        >>>   PostingList([Posting(1, [5])])
+        This is the basis for an "exact phrase" query.
+        :param posting_lists:
+        :return: PostingList.
         '''
-        # TODO
+        if len(posting_lists) == 0:
+            return PostingList()
+        elif len(posting_lists) == 1:
+            return posting_lists[0]
+
+
 
 from naive_dynamic_ix.results import Results
 class MemorySegment:

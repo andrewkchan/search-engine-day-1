@@ -4,13 +4,14 @@ Contact: andrewkchan@berkeley.edu
 License: MIT License
 '''
 
-import dbm
+import bsddb3
+from pickle import dumps, loads
 from naive_dynamic_ix.memory_segment import PostingList
 
 from naive_dynamic_ix.results import Results
 class DiskSegment:
-    def __init__(self, gdbm):
-        self.index = gdbm
+    def __init__(self, bsddb):
+        self.index = bsddb
 
     @classmethod
     def from_file(cls, filename: str):
@@ -19,14 +20,14 @@ class DiskSegment:
         :param filename: str - the filename of the index.
         :return: DiskSegment object.
         '''
-        gdbm = dbm.gnu.open(filename, 'c')
-        return cls(gdbm)
+        bsddb = bsddb3.hashopen(filename, 'c')
+        return cls(bsddb)
 
     def do_one_word_query(self, term: str) -> Results:
         '''
         Executes a one word query on the index with the given term.
         :param term: str
-        :return: Results object.
+        :return: Results object with doc ids but not results snippets.
         '''
         posting_list = self.index[term]
         doc_ids = [posting.doc_id for posting in posting_list]
@@ -36,20 +37,17 @@ class DiskSegment:
         '''
         Executes a phrase query on the index with the given sequence of terms.
         :param terms: List of strings representing the exact phrase in order.
-        :return: Results object.
+        :return: Results object with doc ids but not results snippets.
         '''
-        posting_list = self.index[terms[0]]
+        posting_list = loads(self.index[dumps(terms[0])])
         # TODO
 
-    def keys(self):
+    def iteritems(self):
         '''
-        Supplies a generator over the keys in the disk segment.
-        :return: A generator over the index's keys.
+        Supplies a generator over the items in the disk segment.
+        :return: A generator over the index's items.
         '''
-        k = self.index.firstkey()
-        while k != None:
-            yield k
-            k = self.index.nextkey(k)
+        return self.index.iteritems()
 
     def merge_posting_list(self, term: str, posting_list: PostingList):
         '''
