@@ -6,6 +6,7 @@ License: MIT License
 
 from collections import defaultdict
 from bisect import bisect_left
+import gc
 
 
 class Posting:
@@ -72,6 +73,33 @@ class PostingList:
         else:
             # if already have this doc, merge the positions lists of the postings
             self.postings[posting_i].merge_posting(posting)
+
+    @staticmethod
+    def merge_lists(pl_1, pl_2):
+        '''
+        Merges 2 posting lists, returning a new posting list.
+        :param pl_1: PostingList
+        :param pl_2: PostingList
+        :return: Merged PostingList.
+        '''
+        i, j = 0, 0
+        merged = []
+        while i < len(pl_1.postings) or j < len(pl_2.postings):
+            if i < len(pl_1.postings):
+                if j < len(pl_2.postings):
+                    if pl_1.postings[i].doc_id <= pl_2.postings[j].doc_id:
+                        merged.append(pl_1.postings[i])
+                        i += 1
+                    else:
+                        merged.append(pl_2.postings[j])
+                        j += 1
+                else:
+                    merged.append(pl_1.postings[i])
+                    i += 1
+            else:
+                merged.append(pl_2.postings[j])
+                j += 1
+        return PostingList(merged)
 
     @staticmethod
     def find_phrases(posting_lists):
@@ -162,3 +190,21 @@ class MemorySegment:
 
         # not totally accurate size, but ok approximation
         self._size_postings += len(posting.positions)*4 + 4
+
+    def merge_into_disk(self, disk_segment):
+        '''
+        Merges this memory segment into the given disk segment.
+        :param disk_segment: DiskSegment
+        :return: None
+        '''
+        for term in self.index.keys():
+            disk_segment.merge_posting_list(self.index[term])
+
+    def clear(self):
+        '''
+        Clears all data in the memory segment.
+        :return: None
+        '''
+        # don't use dict.clear because the underlying hash table stays the same size
+        self.index = defaultdict(PostingList)
+        gc.collect()
