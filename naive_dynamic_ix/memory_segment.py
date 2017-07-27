@@ -10,7 +10,7 @@ import gc
 
 
 class Posting:
-    def __init__(self, doc_id: int, positions: list):
+    def __init__(self, doc_id, positions: list):
         '''
         A Posting maintains a sorted position list corresponding to a document id.
         '''
@@ -149,6 +149,12 @@ class MemorySegment:
         self.index = defaultdict(PostingList)
         self._size_postings = 0 # number of bytes the postings in the index will occupy if packed. not incl. terms
 
+    def get_size(self):
+        '''
+        :return: Size in bytes of index's postings.
+        '''
+        return self._size_postings
+
     def do_one_word_query(self, term: str) -> Results:
         '''
         Executes a one word query on the index with the given term.
@@ -170,7 +176,7 @@ class MemorySegment:
         doc_ids = [posting.doc_id for posting in phrase_postings]
         return Results(doc_ids)
 
-    def add_token(self, term: str, doc_id: int, position: int):
+    def add_token(self, term: str, doc_id, position: int):
         '''
         Adds a token to the index.
         A Token is a (term, doc_id, position) triplet, indicating that the term occurred in
