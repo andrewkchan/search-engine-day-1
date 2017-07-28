@@ -15,7 +15,7 @@ class Posting:
         A Posting maintains a sorted position list corresponding to a document id.
         '''
         self.doc_id = doc_id
-        self.positions = positions
+        self.positions = positions if positions else []
 
     def add_position(self, position: int):
         '''
@@ -61,7 +61,7 @@ class PostingList:
 
     def add_posting(self, posting: Posting):
         '''
-        Adds a posting to the posting list, maintaining sorted order.
+        Adds a posting to the posting list, maintaining sorted order by doc id.
         :param posting: Posting object
         :return: None
         '''
@@ -84,20 +84,25 @@ class PostingList:
         '''
         i, j = 0, 0
         merged = []
+        merged_docs = []
         while i < len(pl_1.postings) or j < len(pl_2.postings):
             if i < len(pl_1.postings):
                 if j < len(pl_2.postings):
                     if pl_1.postings[i].doc_id <= pl_2.postings[j].doc_id:
                         merged.append(pl_1.postings[i])
+                        merged_docs.append(pl_1.postings[i].doc_id)
                         i += 1
                     else:
                         merged.append(pl_2.postings[j])
+                        merged_docs.append(pl_2.postings[j].doc_id)
                         j += 1
                 else:
                     merged.append(pl_1.postings[i])
+                    merged_docs.append(pl_1.postings[i].doc_id)
                     i += 1
             else:
                 merged.append(pl_2.postings[j])
+                merged_docs.append(pl_2.postings[j].doc_id)
                 j += 1
         return PostingList(merged)
 
