@@ -15,14 +15,14 @@ class Posting:
         A Posting maintains a sorted position list corresponding to a document id.
         '''
         self.doc_id = doc_id
-        self.positions = positions if positions else []
+        self.positions = positions
 
     def add_position(self, position: int):
         '''
         Insert the given position into the sorted position list iff the position is not already in the list.
         '''
         position_i = bisect_left(self.positions, position)
-        if self.positions[position_i] != position:
+        if position_i == len(self.positions) or self.positions[position_i] != position:
             self.positions.insert(position_i, position)
 
     def merge_posting(self, posting):
@@ -48,6 +48,9 @@ class Posting:
                 j += 1
         self.positions = merged
 
+    def __repr__(self):
+        return "< Posting::" + repr(self.doc_id) + ":" + repr(self.positions) + ">"
+
 
 class PostingList:
     def __init__(self, postings = None):
@@ -57,7 +60,7 @@ class PostingList:
         self.postings = postings if postings else []
 
         # keep a separate list of doc ids mostly for convenience to use with bisect_left.
-        self._doc_ids = [posting.doc_id for posting in postings]
+        self._doc_ids = [posting.doc_id for posting in self.postings]
 
     def add_posting(self, posting: Posting):
         '''
@@ -66,13 +69,16 @@ class PostingList:
         :return: None
         '''
         posting_i = bisect_left(self._doc_ids, posting.doc_id)
-        if self._doc_ids[posting_i] != posting.doc_id:
+        if posting_i == len(self._doc_ids) or self._doc_ids[posting_i] != posting.doc_id:
             # if we don't already have this doc in our postings list, insert it
             self.postings.insert(posting_i, posting)
             self._doc_ids.insert(posting_i, posting.doc_id)
         else:
             # if already have this doc, merge the positions lists of the postings
             self.postings[posting_i].merge_posting(posting)
+
+    def __repr__(self):
+        return "< PostingList::" + repr(self.postings) + ";" + repr(self._doc_ids) + ">"
 
     @staticmethod
     def merge_lists(pl_1, pl_2):
@@ -124,25 +130,26 @@ class PostingList:
         '''
         first_posting_list = posting_lists.__next__()
         # create forward index with doc_id as key and possible start positions of the phrase as values.
-        fw_index = {posting.doc_id: set(posting.positions) for posting in first_posting_list}
+        fw_index = {posting.doc_id: set(posting.positions) for posting in first_posting_list.postings}
         doc_ids = set(fw_index.keys())
 
         for i, posting_list in enumerate(posting_lists):
             ith_doc_ids = set()
-            for posting in posting_list:
+            for posting in posting_list.postings:
                 doc_id = posting.doc_id
                 ith_doc_ids.add(doc_id)
                 if doc_id in fw_index:
                     # in a phrase, the ith term must occur i-1 spots after the 1st term.
-                    offset_poses = [pos-(i-1) for pos in posting.positions]
+                    # we start with the 2nd phrase as i=0, so subtract i+1
+                    offset_poses = [pos-(i+1) for pos in posting.positions]
                     # discard possible phrase starts that don't coincide with any postings of the ith term.
                     fw_index[doc_id] &= set(offset_poses)
                     if len(fw_index[doc_id]) == 0:
-                        del fw_index[doc_id]
+                        fw_index.pop(doc_id, None)
             # discard doc ids where the ith phrase term does not occur
             bad_doc_ids = doc_ids - ith_doc_ids
             for doc_id in bad_doc_ids:
-                del fw_index[doc_id]
+                fw_index.pop(doc_id, None)
 
         # any non-empty entries in the dictionary indicate documents where the phrase occurs.
         result_postings = [Posting(item[0], sorted(item[1])) for item in fw_index.items()]
