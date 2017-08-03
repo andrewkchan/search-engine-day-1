@@ -51,3 +51,5 @@ coverage.xml
 
 #my virtual environment!
 env/
+/env/
+requirements.txt
