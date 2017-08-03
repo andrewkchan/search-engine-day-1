@@ -33,7 +33,11 @@ class DiskPostingListIterator:
             raise StopIteration
         term = self.terms[self.i]
         self.i += 1
-        return self.disk_segment.do_one_word_query(term)
+        try:
+            term_pl = loads(self.disk_segment.index[dumps(term)])
+            return term_pl
+        except KeyError:
+            return PostingList()
 
 
 class DiskSegment:
@@ -56,9 +60,13 @@ class DiskSegment:
         :param term: str
         :return: Results object with doc ids but not results snippets.
         '''
-        posting_list = loads(self.index[dumps(term)])
-        doc_ids = [posting.doc_id for posting in posting_list]
-        return Results(doc_ids)
+        try:
+            posting_list = loads(self.index[dumps(term)])
+            print(posting_list)
+            doc_ids = [posting.doc_id for posting in posting_list.postings]
+            return Results(doc_ids)
+        except KeyError:
+            return Results([])
 
     def do_phrase_query(self, terms: list) -> Results:
         '''
@@ -68,7 +76,7 @@ class DiskSegment:
         '''
         posting_lists = DiskPostingListIterator(self, terms)
         result_pl = PostingList.find_phrases(posting_lists)
-        doc_ids = [posting.doc_id for posting in result_pl]
+        doc_ids = [posting.doc_id for posting in result_pl.postings]
         return Results(doc_ids)
 
     def has_key(self, term: str):
@@ -95,6 +103,7 @@ class DiskSegment:
         if self.has_key(term):
             disk_pl = loads(self.index[dumps(term)])
             merged_pl = PostingList.merge_lists(disk_pl, posting_list)
+            print(merged_pl)
             self.index[dumps(term)] = dumps(merged_pl)
         else:
             self.index[dumps(term)] = dumps(posting_list)

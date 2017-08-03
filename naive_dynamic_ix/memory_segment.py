@@ -51,6 +51,12 @@ class Posting:
     def __repr__(self):
         return "< Posting::" + repr(self.doc_id) + ":" + repr(self.positions) + ">"
 
+    def __eq__(self, other):
+        return self.positions == other.positions and self.doc_id == other.doc_id
+
+    def __ne__(self, other):
+        return not (self == other)
+
 
 class PostingList:
     def __init__(self, postings = None):
@@ -84,6 +90,7 @@ class PostingList:
     def merge_lists(pl_1, pl_2):
         '''
         Merges 2 posting lists, returning a new posting list.
+        For duplicate postings (with same doc id), merge the duplicates and append the merged posting.
         :param pl_1: PostingList
         :param pl_2: PostingList
         :return: Merged PostingList.
@@ -94,10 +101,14 @@ class PostingList:
         while i < len(pl_1.postings) or j < len(pl_2.postings):
             if i < len(pl_1.postings):
                 if j < len(pl_2.postings):
-                    if pl_1.postings[i].doc_id <= pl_2.postings[j].doc_id:
+                    if pl_1.postings[i].doc_id < pl_2.postings[j].doc_id:
                         merged.append(pl_1.postings[i])
                         merged_docs.append(pl_1.postings[i].doc_id)
                         i += 1
+                    elif pl_1.postings[i].doc_id == pl_2.postings[j].doc_id:
+                        #merged.append(pl_1.postings[i])
+                        pass
+                        # TODO
                     else:
                         merged.append(pl_2.postings[j])
                         merged_docs.append(pl_2.postings[j].doc_id)
@@ -174,7 +185,7 @@ class MemorySegment:
         :return: Results object.
         '''
         posting_list = self.index[term]
-        doc_ids = [posting.doc_id for posting in posting_list]
+        doc_ids = [posting.doc_id for posting in posting_list.postings]
         return Results(doc_ids)
 
     def do_phrase_query(self, terms: list) -> Results:
