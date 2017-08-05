@@ -25,31 +25,38 @@ class Posting:
         if position_i == len(self.positions) or self.positions[position_i] != position:
             self.positions.insert(position_i, position)
 
-    def merge_posting(self, posting):
+    @staticmethod
+    def merge_postings(p1, p2):
         '''
-        Merge the positions lists of the input posting into our own position list.
+        Merge the positions lists of the input postings into a new posting.
         '''
+        if p1.doc_id != p2.doc_id:
+            raise ValueError("Postings to merge do not have same doc id")
         i, j = 0, 0
         merged = []
-        while i < len(self.positions) or j < len(posting.positions):
-            if i < len(self.positions):
-                if j < len(posting.positions):
-                    if self.positions[i] <= posting.positions[j]:
-                        merged.append(self.positions[i])
+        while i < len(p1.positions) or j < len(p2.positions):
+            if i < len(p1.positions):
+                if j < len(p2.positions):
+                    if p1.positions[i] == p2.positions[j]:
+                        merged.append(p1.positions[i])
+                        i += 1
+                        j += 1
+                    elif p1.positions[i] < p2.positions[j]:
+                        merged.append(p1.positions[i])
                         i += 1
                     else:
-                        merged.append(posting.positions[j])
+                        merged.append(p2.positions[j])
                         j += 1
                 else:
-                    merged.append(self.positions[i])
+                    merged.append(p1.positions[i])
                     i += 1
             else:
-                merged.append(posting.positions[j])
+                merged.append(p2.positions[j])
                 j += 1
-        self.positions = merged
+        return Posting(p1.doc_id, merged)
 
     def __repr__(self):
-        return "< Posting::" + repr(self.doc_id) + ":" + repr(self.positions) + ">"
+        return "(" + repr(self.doc_id) + ":" + repr(self.positions) + ")"
 
     def __eq__(self, other):
         return self.positions == other.positions and self.doc_id == other.doc_id
@@ -81,7 +88,7 @@ class PostingList:
             self._doc_ids.insert(posting_i, posting.doc_id)
         else:
             # if already have this doc, merge the positions lists of the postings
-            self.postings[posting_i].merge_posting(posting)
+            self.postings[posting_i] = Posting.merge_postings(self.postings[posting_i], posting)
 
     def __repr__(self):
         return "< PostingList::" + repr(self.postings) + ";" + repr(self._doc_ids) + ">"
@@ -97,29 +104,24 @@ class PostingList:
         '''
         i, j = 0, 0
         merged = []
-        merged_docs = []
         while i < len(pl_1.postings) or j < len(pl_2.postings):
             if i < len(pl_1.postings):
                 if j < len(pl_2.postings):
                     if pl_1.postings[i].doc_id < pl_2.postings[j].doc_id:
                         merged.append(pl_1.postings[i])
-                        merged_docs.append(pl_1.postings[i].doc_id)
                         i += 1
                     elif pl_1.postings[i].doc_id == pl_2.postings[j].doc_id:
-                        #merged.append(pl_1.postings[i])
-                        pass
-                        # TODO
+                        merged.append(Posting.merge_postings(pl_1.postings[i], pl_2.postings[j]))
+                        i += 1
+                        j += 1
                     else:
                         merged.append(pl_2.postings[j])
-                        merged_docs.append(pl_2.postings[j].doc_id)
                         j += 1
                 else:
                     merged.append(pl_1.postings[i])
-                    merged_docs.append(pl_1.postings[i].doc_id)
                     i += 1
             else:
                 merged.append(pl_2.postings[j])
-                merged_docs.append(pl_2.postings[j].doc_id)
                 j += 1
         return PostingList(merged)
 
@@ -139,12 +141,12 @@ class PostingList:
         :param posting_lists: Iterator where each element is a PostingList.
         :return: PostingList. The Postings contain start positions of found phrases.
         '''
-        first_posting_list = posting_lists.__next__()
+        first_posting_list = posting_lists[0]
         # create forward index with doc_id as key and possible start positions of the phrase as values.
         fw_index = {posting.doc_id: set(posting.positions) for posting in first_posting_list.postings}
         doc_ids = set(fw_index.keys())
 
-        for i, posting_list in enumerate(posting_lists):
+        for i, posting_list in enumerate(posting_lists[1:]):
             ith_doc_ids = set()
             for posting in posting_list.postings:
                 doc_id = posting.doc_id
@@ -195,7 +197,7 @@ class MemorySegment:
         :return: Results object.
         '''
         term_postlists = [self.index[term] for term in terms]
-        phrase_postings = PostingList.find_phrases(iter(term_postlists)).postings
+        phrase_postings = PostingList.find_phrases(term_postlists).postings
         doc_ids = [posting.doc_id for posting in phrase_postings]
         return Results(doc_ids)
 

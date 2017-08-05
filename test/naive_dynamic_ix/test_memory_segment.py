@@ -13,10 +13,9 @@ class TestPosting(unittest.TestCase):
 
     def test_merge_posting(self):
         p = Posting("dumdumdum", [1, 3, 4])
-        p2 = Posting("dumdumdum", [2, 5, 6])
-        p.merge_posting(p2)
-        self.assertEqual(p.positions, [1, 2, 3, 4, 5, 6])
-        self.assertEqual(p2.positions, [2, 5, 6])
+        p2 = Posting("dumdumdum", [2, 4, 6])
+        merged = Posting.merge_postings(p, p2)
+        self.assertEqual(merged.positions, [1, 2, 3, 4, 6])
 
 class TestPostingList(unittest.TestCase):
     def test_add_posting(self):
@@ -33,10 +32,12 @@ class TestPostingList(unittest.TestCase):
         plist.add_posting(p3)
         self.assertEqual(plist.postings, [p2, p3, p])
         self.assertEqual(plist._doc_ids, ["cat.com", "chimp.net", "dog.com"])
+
+        # will merge duplicate with existing doc id
         p4 = Posting("chimp.net", [9,10])
-        plist.add_posting(p4) # will merge existing doc id
-        self.assertEqual(plist.postings, [p2, p3, p])
-        self.assertEqual(p3.positions, [5,6,9,10]) # merge will modify original posting
+        plist.add_posting(p4)
+        self.assertEqual(plist._doc_ids, ["cat.com", "chimp.net", "dog.com"])
+        self.assertEqual(plist.postings[1].positions, [5,6,9,10])
 
     def test_merge_lists(self):
         p1 = Posting("bus.com", [0,1])
@@ -71,7 +72,7 @@ class TestPostingList(unittest.TestCase):
         plist1 = PostingList([p1_0, p1_1, p1_2])
         plist2 = PostingList([p2_0, p2_1])
         plist3 = PostingList([p3_0, p3_1])
-        phrase_plist = PostingList.find_phrases(iter([plist1, plist2, plist3]))
+        phrase_plist = PostingList.find_phrases([plist1, plist2, plist3])
         self.assertEqual(phrase_plist.postings[0].doc_id, "hbo.com")
         self.assertEqual(phrase_plist.postings[0].positions, [0])
 

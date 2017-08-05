@@ -9,37 +9,6 @@ from pickle import dumps, loads
 from naive_dynamic_ix.memory_segment import PostingList
 from naive_dynamic_ix.results import Results
 
-
-class DiskPostingListIterator:
-    '''
-    Iterator that yields the posting lists for a given list of terms and a disk segment to process queries.
-    '''
-    def __init__(self, disk_segment, terms):
-        '''
-        Creates an iterator that yields the posting lists (in order) for a given list of terms
-        and a disk segment to process the queries for the terms.
-        :param disk_segment: DiskSegment object.
-        :param terms: list of string terms.
-        '''
-        self.disk_segment = disk_segment
-        self.terms = terms
-
-    def __iter__(self):
-        self.i = 0
-        return self
-
-    def __next__(self):
-        if self.i > len(self.terms):
-            raise StopIteration
-        term = self.terms[self.i]
-        self.i += 1
-        try:
-            term_pl = loads(self.disk_segment.index[dumps(term)])
-            return term_pl
-        except KeyError:
-            return PostingList()
-
-
 class DiskSegment:
     def __init__(self, bsddb):
         self.index = bsddb
@@ -62,7 +31,6 @@ class DiskSegment:
         '''
         try:
             posting_list = loads(self.index[dumps(term)])
-            print(posting_list)
             doc_ids = [posting.doc_id for posting in posting_list.postings]
             return Results(doc_ids)
         except KeyError:
@@ -74,14 +42,14 @@ class DiskSegment:
         :param terms: List of strings representing the exact phrase in order.
         :return: Results object with doc ids but not results snippets.
         '''
-        posting_lists = DiskPostingListIterator(self, terms)
+        posting_lists = [loads(self.index[dumps(t)]) for t in terms]
         result_pl = PostingList.find_phrases(posting_lists)
         doc_ids = [posting.doc_id for posting in result_pl.postings]
         return Results(doc_ids)
 
     def has_key(self, term: str):
         '''
-        :param term:
+        :param term: The term to search for the index
         :return: term is in the index or not.
         '''
         return self.index.has_key(dumps(term))
@@ -89,6 +57,7 @@ class DiskSegment:
     def keys(self):
         '''
         Supplies a generator over the keys in the disk segment.
+        Note that all keys are pickled and must be loaded().
         :return: A generator over the index's keys.
         '''
         return self.index.keys()
@@ -103,7 +72,6 @@ class DiskSegment:
         if self.has_key(term):
             disk_pl = loads(self.index[dumps(term)])
             merged_pl = PostingList.merge_lists(disk_pl, posting_list)
-            print(merged_pl)
             self.index[dumps(term)] = dumps(merged_pl)
         else:
             self.index[dumps(term)] = dumps(posting_list)
