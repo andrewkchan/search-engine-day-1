@@ -21,12 +21,17 @@ class Index:
         self.disk_segment = DiskSegment.from_file(filename)
         self.memory_segment = MemorySegment()
         self.porter = PorterStemmer()
-        self.memory_limit = 512 # arbitrary memory limit in bytes before writing index to disk
+        self.memory_limit = 512000000 # arbitrary memory limit in bytes before writing index to disk
+
+        with open("stopwords.dat", 'r') as f:
+            stopwords = [line.rstrip() for line in f]
+            self.stopwords = set(stopwords)
 
     def extract_terms(self, doc_str) -> list:
         doc_str = doc_str.lower()
         doc_str = re.sub(r'[^a-z0-9 ]', ' ', doc_str) # replace non-alphanumeric characters with whitespace
         terms = doc_str.split()
+        terms = [t for t in terms if t not in self.stopwords]
         return [self.porter.stem(word, 0, len(word) - 1) for word in terms]  # return stemmed words
 
     def add_document(self, doc_str, doc_id):
