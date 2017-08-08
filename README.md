@@ -11,3 +11,8 @@ A hash-based inverted index. Uses Berkeley DB for backing disk segment, and a na
 in memory along with a single main index on disk. Supports one word and phrase queries.
 
 Benchmarks are still WIP.
+
+## Installation
+
+1. `sudo apt-get install build-essential libdb-dev`
+2. `pip install bsddb3` (use Python 3)
