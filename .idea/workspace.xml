@@ -2,15 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="feed78cc-9ac6-497d-ae84-22a06258d531" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index_wikiquote.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/naive_dynamic_ix/docstore.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/requirements.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/naive_dynamic_ix/test_index.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/naive_dynamic_ix/disk_segment.py" afterPath="$PROJECT_DIR$/naive_dynamic_ix/disk_segment.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/naive_dynamic_ix/index.py" afterPath="$PROJECT_DIR$/naive_dynamic_ix/index.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/naive_dynamic_ix/memory_segment.py" afterPath="$PROJECT_DIR$/naive_dynamic_ix/memory_segment.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/naive_dynamic_ix/results.py" afterPath="$PROJECT_DIR$/naive_dynamic_ix/results.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/naive_dynamic_ix/test_disk_segment.py" afterPath="$PROJECT_DIR$/test/naive_dynamic_ix/test_disk_segment.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/naive_dynamic_ix/test_memory_segment.py" afterPath="$PROJECT_DIR$/test/naive_dynamic_ix/test_memory_segment.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,10 +22,22 @@
       <file leaf-file-name="memory_segment.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/memory_segment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="192" column="11" lean-forward="true" selection-start-line="192" selection-start-column="11" selection-end-line="192" selection-end-column="11" />
+            <state relative-caret-position="4928">
+              <caret line="224" column="6" lean-forward="true" selection-start-line="224" selection-start-column="6" selection-end-line="224" selection-end-column="6" />
               <folding>
                 <element signature="e#84#119#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_index.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/naive_dynamic_ix/test_index.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="88">
+              <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -37,8 +46,8 @@
       <file leaf-file-name="results.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/results.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="14" column="30" lean-forward="true" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+            <state relative-caret-position="66">
+              <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -47,7 +56,7 @@
       <file leaf-file-name="disk_segment.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/disk_segment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="792">
+            <state relative-caret-position="-144">
               <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
               <folding>
                 <element signature="e#84#97#0" expanded="true" />
@@ -71,20 +80,18 @@
       <file leaf-file-name="test_disk_segment.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/naive_dynamic_ix/test_disk_segment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1166">
-              <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="22">
+              <caret line="1" column="9" lean-forward="true" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/index.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="472">
-              <caret line="85" column="53" lean-forward="false" selection-start-line="85" selection-start-column="53" selection-end-line="85" selection-end-column="53" />
+            <state relative-caret-position="440">
+              <caret line="20" column="73" lean-forward="true" selection-start-line="20" selection-start-column="73" selection-end-line="20" selection-end-column="73" />
               <folding>
                 <element signature="e#84#141#0" expanded="true" />
               </folding>
@@ -127,6 +134,7 @@
     <findStrings>
       <find>doc_id</find>
       <find>print</find>
+      <find>loads</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -141,16 +149,17 @@
         <option value="$PROJECT_DIR$/naive_dynamic_ix/test/test_memory_segment.py" />
         <option value="$PROJECT_DIR$/test/__init__.py" />
         <option value="$PROJECT_DIR$/test/test_memory_segment.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/test/naive_dynamic_ix/__init__.py" />
         <option value="$PROJECT_DIR$/index_wikiquote.py" />
         <option value="$PROJECT_DIR$/naive_dynamic_ix/docstore.py" />
-        <option value="$PROJECT_DIR$/naive_dynamic_ix/memory_segment.py" />
         <option value="$PROJECT_DIR$/test/naive_dynamic_ix/test_memory_segment.py" />
         <option value="$PROJECT_DIR$/naive_dynamic_ix/disk_segment.py" />
         <option value="$PROJECT_DIR$/test/naive_dynamic_ix/test_disk_segment.py" />
-        <option value="$PROJECT_DIR$/naive_dynamic_ix/results.py" />
         <option value="$PROJECT_DIR$/naive_dynamic_ix/index.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/naive_dynamic_ix/memory_segment.py" />
+        <option value="$PROJECT_DIR$/naive_dynamic_ix/results.py" />
+        <option value="$PROJECT_DIR$/test/naive_dynamic_ix/test_index.py" />
       </list>
     </option>
   </component>
@@ -373,7 +382,14 @@
       <option name="project" value="LOCAL" />
       <updated>1501916905865</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="document store, global index query methods">
+      <created>1502174367748</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1502174367748</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -407,7 +423,8 @@
     <MESSAGE value="disk segment merge method" />
     <MESSAGE value="fixed PostingList merge, removed DiskPostingListIterator, find_phrases iteration, now passing disk segment tests" />
     <MESSAGE value="stopwords" />
-    <option name="LAST_COMMIT_MESSAGE" value="stopwords" />
+    <MESSAGE value="document store, global index query methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="document store, global index query methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -416,16 +433,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/memory_segment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#84#119#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
@@ -747,20 +754,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="13" column="6" lean-forward="true" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
@@ -790,26 +783,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/memory_segment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="192" column="11" lean-forward="true" selection-start-line="192" selection-start-column="11" selection-end-line="192" selection-end-column="11" />
-          <folding>
-            <element signature="e#84#119#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/disk_segment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="792">
-          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-          <folding>
-            <element signature="e#84#97#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/naive_dynamic_ix/test_memory_segment.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="462">
@@ -817,24 +790,6 @@
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/naive_dynamic_ix/test_disk_segment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1166">
-          <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="14" column="30" lean-forward="true" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -848,12 +803,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="53" column="5" lean-forward="false" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/disk_segment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-144">
+          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding>
+            <element signature="e#84#97#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/memory_segment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4928">
+          <caret line="224" column="6" lean-forward="true" selection-start-line="224" selection-start-column="6" selection-end-line="224" selection-end-column="6" />
+          <folding>
+            <element signature="e#84#119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/naive_dynamic_ix/test_disk_segment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="1" column="9" lean-forward="true" selection-start-line="1" selection-start-column="9" selection-end-line="1" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/naive_dynamic_ix/index.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="472">
-          <caret line="85" column="53" lean-forward="false" selection-start-line="85" selection-start-column="53" selection-end-line="85" selection-end-column="53" />
+        <state relative-caret-position="440">
+          <caret line="20" column="73" lean-forward="true" selection-start-line="20" selection-start-column="73" selection-end-line="20" selection-end-column="73" />
           <folding>
             <element signature="e#84#141#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/naive_dynamic_ix/test_index.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

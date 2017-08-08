@@ -15,3 +15,8 @@ class Results:
         self.doc_ids = doc_ids
         self.doc_titles = doc_titles
         self.snippets = snippets
+
+    def __str__(self):
+        return "(" + ",".join(
+            [(self.doc_ids[i], self.doc_titles[i], self.snippets[i]) for i in range(0, len(self.doc_ids))]
+        ) + ")"

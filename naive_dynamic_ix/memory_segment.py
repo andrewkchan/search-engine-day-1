@@ -228,7 +228,7 @@ class MemorySegment:
         :return: None
         '''
         for term in self.index.keys():
-            disk_segment.merge_posting_list(self.index[term])
+            disk_segment.merge_posting_list(term, self.index[term])
 
     def clear(self):
         '''
