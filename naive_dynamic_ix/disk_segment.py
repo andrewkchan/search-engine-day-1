@@ -7,7 +7,6 @@ License: MIT License
 import bsddb3
 from pickle import dumps, loads
 from naive_dynamic_ix.memory_segment import PostingList
-from naive_dynamic_ix.results import Results
 
 class DiskSegment:
     def __init__(self, bsddb):
@@ -23,29 +22,29 @@ class DiskSegment:
         bsddb = bsddb3.hashopen(filename, 'c')
         return cls(bsddb)
 
-    def do_one_word_query(self, term: str) -> Results:
+    def do_one_word_query(self, term: str) -> list:
         '''
         Executes a one word query on the index with the given term.
         :param term: str
-        :return: Results object with doc ids but not results snippets.
+        :return: List of matching doc ids.
         '''
         try:
             posting_list = loads(self.index[dumps(term)])
             doc_ids = [posting.doc_id for posting in posting_list.postings]
-            return Results(doc_ids)
+            return doc_ids
         except KeyError:
-            return Results([])
+            return []
 
-    def do_phrase_query(self, terms: list) -> Results:
+    def do_phrase_query(self, terms: list) -> list:
         '''
         Executes a phrase query on the index with the given sequence of terms.
         :param terms: List of strings representing the exact phrase in order.
-        :return: Results object with doc ids but not results snippets.
+        :return: List of matching doc ids.
         '''
         posting_lists = [loads(self.index[dumps(t)]) for t in terms]
         result_pl = PostingList.find_phrases(posting_lists)
         doc_ids = [posting.doc_id for posting in result_pl.postings]
-        return Results(doc_ids)
+        return doc_ids
 
     def has_key(self, term: str):
         '''

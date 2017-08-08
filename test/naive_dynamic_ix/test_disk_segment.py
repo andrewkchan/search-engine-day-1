@@ -22,12 +22,12 @@ class TestDiskSegment(unittest.TestCase):
         self.disk_ix.merge_posting_list("vehicle", plist1)
 
         res = self.disk_ix.do_one_word_query("vehicle")
-        self.assertEqual(res.doc_ids, ["bus.com", "truck.com"])
+        self.assertEqual(res, ["bus.com", "truck.com"])
 
         self.disk_ix.merge_posting_list("vehicle", plist2)
 
         res = self.disk_ix.do_one_word_query("vehicle")
-        self.assertEqual(res.doc_ids, ["bus.com", "car.com", "truck.com", "van.com"])
+        self.assertEqual(res, ["bus.com", "car.com", "truck.com", "van.com"])
 
         self.disk_ix.merge_posting_list("bus", PostingList([p1]))
         self.disk_ix.merge_posting_list("car", PostingList([p2]))
@@ -35,7 +35,7 @@ class TestDiskSegment(unittest.TestCase):
         self.disk_ix.merge_posting_list("van", PostingList([p4]))
 
         res = self.disk_ix.do_one_word_query("bus")
-        self.assertEqual(res.doc_ids, ["bus.com"])
+        self.assertEqual(res, ["bus.com"])
 
         keys = set(loads(k) for k in self.disk_ix.keys())
         self.assertIn("bus", keys)
@@ -44,7 +44,7 @@ class TestDiskSegment(unittest.TestCase):
         self.assertIn("van", keys)
 
         empty_res = self.disk_ix.do_one_word_query("plane")
-        self.assertEqual(empty_res.doc_ids, [])
+        self.assertEqual(empty_res, [])
 
         # winter
         p1_0 = Posting("hbo.com", [0, 5])
@@ -64,9 +64,9 @@ class TestDiskSegment(unittest.TestCase):
         self.disk_ix.merge_posting_list("coming", PostingList([p3_0, p3_1]))
 
         pq_result = self.disk_ix.do_phrase_query(["winter", "is", "coming"])
-        self.assertEqual(pq_result.doc_ids, ["hbo.com"])
+        self.assertEqual(pq_result, ["hbo.com"])
         pq_empty_result = self.disk_ix.do_phrase_query(["coming", "is", "winter"])
-        self.assertEqual(pq_empty_result.doc_ids, [])
+        self.assertEqual(pq_empty_result, [])
 
     def tearDown(self):
         os.remove("test_ix.db")

@@ -10,7 +10,8 @@ class Results:
     Includes information about the documents containing the query as well as
     the snippets of those documents where the query occurs.
     '''
-    def __init__(self, doc_ids = [], snippets = []):
+    def __init__(self, doc_ids = [], doc_titles = [], snippets = []):
         # the following should be parallel lists.
         self.doc_ids = doc_ids
+        self.doc_titles = doc_titles
         self.snippets = snippets

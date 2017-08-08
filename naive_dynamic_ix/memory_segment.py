@@ -168,7 +168,6 @@ class PostingList:
         result_postings = [Posting(item[0], sorted(item[1])) for item in fw_index.items()]
         return PostingList(result_postings)
 
-from naive_dynamic_ix.results import Results
 class MemorySegment:
     def __init__(self):
         self.index = defaultdict(PostingList)
@@ -180,26 +179,26 @@ class MemorySegment:
         '''
         return self._size_postings
 
-    def do_one_word_query(self, term: str) -> Results:
+    def do_one_word_query(self, term: str) -> list:
         '''
         Executes a one word query on the index with the given term.
         :param term: str
-        :return: Results object.
+        :return: List of matching doc ids.
         '''
         posting_list = self.index[term]
         doc_ids = [posting.doc_id for posting in posting_list.postings]
-        return Results(doc_ids)
+        return doc_ids
 
-    def do_phrase_query(self, terms: list) -> Results:
+    def do_phrase_query(self, terms: list) -> list:
         '''
         Executes a phrase query on the index with the given sequence of terms.
         :param terms: List of strings representing the exact phrase in order.
-        :return: Results object.
+        :return: List of matching doc ids.
         '''
         term_postlists = [self.index[term] for term in terms]
         phrase_postings = PostingList.find_phrases(term_postlists).postings
         doc_ids = [posting.doc_id for posting in phrase_postings]
-        return Results(doc_ids)
+        return doc_ids
 
     def add_token(self, term: str, doc_id, position: int):
         '''

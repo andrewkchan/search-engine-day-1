@@ -118,14 +118,14 @@ class TestMemorySegment(unittest.TestCase):
 
         # one word query
         owq_result = ix.do_one_word_query("winter")
-        self.assertEqual(owq_result.doc_ids, ["disney.com", "hbo.com", "patagonia.com"])
+        self.assertEqual(owq_result, ["disney.com", "hbo.com", "patagonia.com"])
         owq_empty_result = ix.do_one_word_query("frozen")
-        self.assertEqual(owq_empty_result.doc_ids, [])
+        self.assertEqual(owq_empty_result, [])
         # phrase query
         pq_result = ix.do_phrase_query(["winter", "is", "coming"])
-        self.assertEqual(pq_result.doc_ids, ["hbo.com"])
+        self.assertEqual(pq_result, ["hbo.com"])
         pq_empty_result = ix.do_phrase_query(["coming", "is", "winter"])
-        self.assertEqual(pq_empty_result.doc_ids, [])
+        self.assertEqual(pq_empty_result, [])
         ix.clear()
 
 
