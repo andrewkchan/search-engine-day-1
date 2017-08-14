@@ -31,6 +31,11 @@ class Index:
             stopwords = [line.rstrip() for line in f]
             self.stopwords = set(stopwords)
 
+    def preprocess_term(self, term):
+        term = term.lower()
+        term = re.sub(r'[^a-z0-9 ]', '', term) # strip non-alphanumeric characters
+        return self.porter.stem(term, 0, len(term) - 1)
+
     def extract_terms(self, doc_str) -> list:
         doc_str = doc_str.lower()
         doc_str = re.sub(r'[^a-z0-9 ]', ' ', doc_str) # replace non-alphanumeric characters with whitespace
@@ -52,6 +57,7 @@ class Index:
         :param terms: List of the terms to search for.
         :return: Results object.
         '''
+        terms = [self.preprocess_term(term) for term in terms if term not in self.stopwords]
         doc_ids = set()
         for term in terms:
             mem_results = self.memory_segment.do_one_word_query(term)
@@ -74,6 +80,7 @@ class Index:
         :param terms: List of terms comprising the phrase to search for.
         :return: Results object
         '''
+        terms = [self.preprocess_term(term) for term in terms if term not in self.stopwords]
         doc_ids = set(self.memory_segment.do_phrase_query(terms)) | set(self.disk_segment.do_phrase_query(terms))
         doc_ids = list(doc_ids)
         doc_titles = []
@@ -100,5 +107,5 @@ class Index:
         :param doc_body: Document text that contains the terms.
         :return: String snippet of minimum length containing all the terms in termset.
         '''
-        # TODO. will just return first 100 chars for now.
-        return doc_body[:100]
+        # TODO. will just return first 400 chars for now.
+        return doc_body[:400]

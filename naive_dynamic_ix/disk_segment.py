@@ -41,7 +41,8 @@ class DiskSegment:
         :param terms: List of strings representing the exact phrase in order.
         :return: List of matching doc ids.
         '''
-        posting_lists = [loads(self.index[dumps(t)]) for t in terms]
+        posting_lists = [loads(self.index[dumps(t)]) if self.has_key(t) else PostingList()
+                         for t in terms]
         result_pl = PostingList.find_phrases(posting_lists)
         doc_ids = [posting.doc_id for posting in result_pl.postings]
         return doc_ids
